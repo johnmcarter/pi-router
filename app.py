@@ -49,7 +49,8 @@ def edit():
             subprocess.call(['sed', '-i', 's/ssid=%s/ssid=%s/' % (current_ssid, new_val),
                  filename])
         elif setting == "password" and new_val != None:
-            new_val = request.form.get('new_value')
+            subprocess.call(['sed', '-i', 's/wpa_passphrase=%s/wpa_passphrase=%s/' 
+            % (current_password, new_val), filename])
             
     # Display new settings
     config_file = open(filename, "r")
