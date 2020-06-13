@@ -18,7 +18,6 @@ def home():
     else:
         config_file = open("/etc/hostapd/hostapd.conf", "r")
         credentials = config_file.readlines()
-        #credentials = check_output(['./get_network_credentials.sh']).decode('utf-8')
         return render_template("index.html", credentials=credentials)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -39,17 +38,17 @@ def edit():
     credentials = config_file.readlines()
     current_ssid = credentials[2].strip("\n").split("ssid=")[1]
     current_password = credentials[8].strip("\n").split("wpa_passphrase=")[1]
-    print("Current SSID:", current_ssid)
-    print("Current Password:", current_password)
 
     if request.method == "POST":
         change = ''
         setting = request.form.get('setting')
         new_val = request.form.get('new_value')
+        # Update the SSID by calling subprocess
         if setting == "ssid" and new_val != None:
             subprocess.call(['sed', '-i', 's/ssid=%s/ssid=%s/' % (current_ssid, new_val),
                  filename])
             change = "Success! ssid was changed from {} to {}".format(current_ssid, new_val)
+        # Update the password by calling subprocess
         elif setting == "password" and new_val != None:
             subprocess.call(['sed', '-i', 's/wpa_passphrase=%s/wpa_passphrase=%s/' 
             % (current_password, new_val), filename])
@@ -60,8 +59,7 @@ def edit():
         credentials = config_file.readlines()
         new_ssid = credentials[2].strip("\n").split("ssid=")[1]
         new_password = credentials[8].strip("\n").split("wpa_passphrase=")[1]
-        print("New SSID:", new_ssid)
-        print("New Password:", new_password)
+ 
         if change:
             return render_template('edit.html', credentials=credentials, change=change)
 
