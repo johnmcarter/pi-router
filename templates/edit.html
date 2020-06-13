@@ -23,6 +23,7 @@ Edit Settings
         {{setting}}<br>
       {% endfor %}
       <br>
+      <h5 style="color:red;">{{change}}</h5>
       <form class="form-inline" method="POST">
         <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Edit a setting:</label>
         <select name="setting" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
@@ -38,9 +39,10 @@ Edit Settings
         <br>
         <button type="submit" class="btn btn-primary my-1">Submit</button>
       </form>
+      <br>
+      A reboot is required for changes to take effect
     </div>
     <br>
-    A reboot is required for changes to take effect
   </body>
 </html>
 

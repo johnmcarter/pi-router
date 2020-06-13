@@ -1,5 +1,5 @@
 # import the Flask class from the flask module
-from flask import Flask, render_template, redirect, url_for, request, session
+from flask import Flask, render_template, redirect, url_for, request, session, flash
 import subprocess
 import os
 
@@ -43,24 +43,33 @@ def edit():
     print("Current Password:", current_password)
 
     if request.method == "POST":
+        change = ''
         setting = request.form.get('setting')
         new_val = request.form.get('new_value')
         if setting == "ssid" and new_val != None:
             subprocess.call(['sed', '-i', 's/ssid=%s/ssid=%s/' % (current_ssid, new_val),
                  filename])
+            change = "Success! ssid was changed from {} to {}".format(current_ssid, new_val)
         elif setting == "password" and new_val != None:
             subprocess.call(['sed', '-i', 's/wpa_passphrase=%s/wpa_passphrase=%s/' 
             % (current_password, new_val), filename])
+            change = "Success! password was changed from {} to {}".format(current_password, new_val)
             
-    # Display new settings
-    config_file = open(filename, "r")
-    credentials = config_file.readlines()
-    new_ssid = credentials[2].strip("\n").split("ssid=")[1]
-    new_password = credentials[8].strip("\n").split("wpa_passphrase=")[1]
-    print("New SSID:", new_ssid)
-    print("New Password:", new_password)
+        # Display new settings
+        config_file = open(filename, "r")
+        credentials = config_file.readlines()
+        new_ssid = credentials[2].strip("\n").split("ssid=")[1]
+        new_password = credentials[8].strip("\n").split("wpa_passphrase=")[1]
+        print("New SSID:", new_ssid)
+        print("New Password:", new_password)
+        if change:
+            return render_template('edit.html', credentials=credentials, change=change)
+
     return render_template('edit.html', credentials=credentials)
 
+@app.route('/reboot', methods=['GET', 'POST'])
+def reboot():
+    subprocess.call(['shutdown', '-r', 'now'])
 
 # start the server with the 'run()' method
 if __name__ == '__main__':
