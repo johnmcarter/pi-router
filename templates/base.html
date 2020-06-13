@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Raspbery Pi Router - {% block title %}{% endblock %}</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="/env/lib/bootstrap/css/bootstrap.min.css">
+    <link href="/css/main.css">
+
+    <script src="/env/lib/bootstrap/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+            <!-- Brand -->
+            <a class="navbar-brand" href="/">
+            <img src="static/pi_icon.png" style="max-height: 40px;">Raspberry Pi Router</a>
+          
+            <!-- Toggler/collapsibe Button -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <!-- Navbar links -->
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="edit">Edit Settings</a>
+                </li>
+              </ul>
+            </div> 
+          </nav>
+    </header>
+
+    <main>
+        <div class="container content">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+</body>
+
+</html>

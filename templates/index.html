@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% set active = "Home" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Raspberry Pi Router - Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+    <div class="container">
+      <br>
+      
+      <h4>Network Settings:<br></h4>
+      {% for setting in credentials %}
+        {{setting}}<br>
+      {% endfor %}
+      <br>
+      <form action= "{{ url_for('edit') }}" method="POST">
+        <p><input type="submit" value="Edit settings" /></p>
+      </form>
+      
+    </div>
+  </body>
+</html>
+
+{% endblock %}

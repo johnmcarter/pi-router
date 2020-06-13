@@ -1,0 +1,11 @@
+[Unit]
+Description=Flask Webserver
+After=network.target
+
+[Service]
+WorkingDirectory=/home/pi/web_server/
+ExecStart=/usr/bin/python3 app.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% set active = "Login" %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block content %}
+
+<html>
+  <head>
+    <title>Raspberry Pi Router - Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+    <div class="container">
+    <center>
+      <br>
+      <h3>Please login</h3>
+      <br>
+      <form action="" method="post">
+        <input type="text" placeholder="Username" name="username" value="{{
+          request.form.username }}">
+         <input type="password" placeholder="Password" name="password" value="{{
+          request.form.password }}">
+        <input class="btn btn-default" type="submit" value="Login">
+      </form>
+      {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}
+      {% endif %}
+        </center>
+    </div>
+  </body>
+</html>
+
+{% endblock %}
