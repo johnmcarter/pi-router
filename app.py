@@ -6,7 +6,6 @@ import os
 # create the application object
 app = Flask(__name__)
 app.secret_key = "super secret key"
-app.config["DEBUG"] = True
 username = 'pi'
 password = 'pennylane'
 
@@ -71,4 +70,4 @@ def reboot():
 
 # start the server with the 'run()' method
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True, port=8080)
+    app.run(host='0.0.0.0', port=8080)
