@@ -98,6 +98,33 @@ In the empty editor insert these statements. Save it and quit the editor:
 BindsTo=hostapd.service
 After=hostapd.service
 ```
-
+#### Step 4: setup static interfaces
+Create these files:
+```
+rpi ~# vim /etc/systemd/network/08-wlan0.network 
+[Match]
+Name=wlan0
+[Network]
+DNSSEC=no
+# If you need a static ip address, then toggle commenting next four lines (example)
+DHCP=yes
+#Address=192.168.50.60/24
+#Gateway=192.168.50.1
+#DNS=84.200.69.80 1.1.1.1
+```
+```
+rpi ~# vim /etc/systemd/network/12-ap0.network 
+[Match]
+Name=ap0
+[Network]
+DNSSEC=no
+IPMasquerade=yes
+Address=192.168.4.1/24
+DHCPServer=yes
+[DHCPServer]
+DNS=84.200.69.80 1.1.1.1
+```
+Then reboot. Then your router/repeater should be visible to your devices!  
+Next, clone this repo to install a Flask-powered web server to edit the network configurations.
 
 
