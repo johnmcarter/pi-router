@@ -1,4 +1,4 @@
-# Setup Raspberry Pi Router and Flask Web Server GUI
+# Raspberry Pi WiFi Repeater/Router and Flask Web Server GUI
 
 To install the required dependencies, run
 ```
