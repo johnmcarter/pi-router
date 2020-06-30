@@ -4,7 +4,7 @@ To install the required dependencies, run
 ```
 pip3 install -r requirements.txt
 ```
-The web server is running continuously as a Linux service, so the webserver can be found at <routerIPAddress>:8080 on a local browser while connected to the local Pi network. 
+The web server is running continuously as a Linux service, so the webserver can be found at the router's IP address on port 8080 on a local browser while connected to the local Pi network. For instance, if you follow the instructions below, it can be found at http://192.168.4.1:8080.
 
 ### Instructions for Converting Raspberry Pi to Access Point
 Access point instructions adapted from:  
