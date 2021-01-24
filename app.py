@@ -17,6 +17,7 @@ def home():
     else:
         config_file = open("/etc/hostapd/hostapd.conf", "r")
         credentials = config_file.readlines()
+    
         return render_template("index.html", credentials=credentials)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -70,4 +71,4 @@ def reboot():
 
 # start the server with the 'run()' method
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=80)
