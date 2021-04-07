@@ -9,28 +9,59 @@ Home
 
 <!DOCTYPE html>
 <html>
-  <head>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <title>Raspberry Pi Router - Home</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
-  </head>
-  <body>
+
+<head>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <title>Raspberry Pi Router - Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
+
+<body>
+  <div class="container">
+    <br>
+    <h3 class="text-center">Welcome back, {{name}}!</h3>
+    <br>
     <div class="container">
+      <h4 class="text-left">Connected Devices</h4>
       <br>
-      <h3>Welcome back, {{name}}!</h3>
+      <table class="table text-center">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">IP</th>
+            <th scope="col">MAC Address</th>
+            <th scope="col">Interface</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for device in devices %}
+          <tr>
+            <th scope="row">{{loop.index}}</th>
+            <td>{{device[0]}}</td>
+            <td>{{device[1]}}</td>
+            <td>{{device[2]}}</td>
+            <td>{{device[3]}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <hr>
+      <h4 class="text-left">Network Settings</h4>
       <br>
-      <h4>Network Settings<br></h4>
       {% for setting in credentials %}
-        {{setting}}<br>
+      {{setting}}<br>
       {% endfor %}
       <br>
-      <form action= "{{ url_for('edit') }}" method="POST">
+      <form action="{{ url_for('edit') }}" method="POST">
         <p><input type="submit" value="Edit settings" /></p>
       </form>
-      
     </div>
-  </body>
+  </div>
+  </div>
+</body>
+
 </html>
 
 {% endblock %}

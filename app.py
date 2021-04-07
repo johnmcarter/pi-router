@@ -14,7 +14,7 @@ DATABASE_PATH = 'users.db'
 app = Flask(__name__)
 app.secret_key = "super secret key"
 
-login_message = "Login required for this action"
+login_message = "Authentication required for this action"
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -32,11 +32,26 @@ def close_db(exception):
 def home():
     if 'user' in session:
         name = session['user']['name']
+
+        # Get network settings
         config_file = open("/etc/hostapd/hostapd.conf", "r")
         credentials = config_file.readlines()
-        return render_template("index.html", credentials=credentials, name=name)
+        
+        # Get connected devices
+        devices = []
+        for device in os.popen('arp -a'): 
+            device = device.split()
+            device_name = device[0]
+            IP = device[1]
+            MAC = device[3]
+            interface = device[-1]
+            devices.append([device_name, IP, MAC, interface]) 
+                   
+        return render_template("index.html", name=name, 
+                               credentials=credentials, 
+                               devices=devices)
     else:
-        return render_template('login.html') 
+        return render_template('login.html' ) 
     
 @app.route('/create_user', methods=['GET', 'POST'])
 def create_user():
