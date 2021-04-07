@@ -10,5 +10,7 @@ CREATE TABLE users (
     username TEXT NOT NULL,
     encrypted_password TEXT NOT NULL
 );
-.save users.db
+.save ../users.db
 EOF
+
+echo "[${grn}SUCCESS${end}] Database created"
