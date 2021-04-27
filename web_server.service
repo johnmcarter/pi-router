@@ -1,11 +1,12 @@
 [Unit]
-Description=Flask Webserver
+Description=uWSGI instance to serve Pi-Router
 After=network.target
 
 [Service]
-WorkingDirectory=/home/pi/web_server/
-ExecStart=/usr/bin/python3 app.py
-Restart=always
+User=root
+WorkingDirectory=/home/pi/web_server
+ExecStart=/home/pi/.local/bin/uwsgi --ini web_server.ini
 
 [Install]
 WantedBy=multi-user.target
+

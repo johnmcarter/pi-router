@@ -2,7 +2,7 @@
 John Carter
 Flask server for Pi-Router User Interface
 Created: 2021/04/26 19:57:43
-Last modified: 2021/04/26 20:14:09
+Last modified: 2021/04/26 21:51:25
 '''
 
 from flask import (Flask, g, render_template, redirect, url_for, 
@@ -149,4 +149,4 @@ def logout():
     return redirect('/login')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0')
