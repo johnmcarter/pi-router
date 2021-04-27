@@ -7,16 +7,6 @@ Home
 
 {% block content %}
 
-<!DOCTYPE html>
-<html>
-
-<head>
-  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-  <title>Raspberry Pi Router - Home</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
-</head>
-
 <body>
   <div class="container">
     <br>
@@ -54,14 +44,16 @@ Home
       {{setting}}<br>
       {% endfor %}
       <br>
-      <form action="{{ url_for('edit') }}" method="POST">
-        <p><input type="submit" value="Edit settings" /></p>
-      </form>
+      <a href="/edit"><button type="submit" class="btn btn-primary">Edit Settings</button></a>
+      <hr>
+      <h4 class="text-left">Network Health</h4>
+      <a href="/network_health">
+        <img src="/static/img/malware_detection/malware_detection.png"></img>
+      </a>
+      <br>
     </div>
   </div>
   </div>
 </body>
-
-</html>
 
 {% endblock %}

@@ -7,43 +7,35 @@ Edit Settings
 
 {% block content %}
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Raspberry Pi Router - Edit Settings</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
-  </head>
-  <body>
-    <div class="container">
-      <br>
+<br>
+<h3>Network Settings</h3>
+<hr>
 
-      <h4>Current Network Settings:<br></h4>
-      {% for setting in credentials %}
-        {{setting}}<br>
-      {% endfor %}
-      <br>
-      <h5 style="color:red;">{{change}}</h5>
-      <form class="form-inline" method="POST">
-        <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Edit a setting:</label>
-        <select name="setting" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
-          <option selected>Please choose a setting</option>
-          <option value="ssid">SSID</option>
-          <option value="password">Password</option>
-        </select>
-        <br>
-        <div class="form-group">
-            <input type="text" class="form-control" id="new_value" name='new_value' 
-            placeholder="New Value">
-        </div>
-        <br>
-        <button type="submit" class="btn btn-primary my-1">Submit</button>
-      </form>
-      <br>
-      <i>A reboot is required for changes to take effect</i>
-    </div>
+<body>
+  <div class="container">
+    {% for setting in credentials %}
+    {{setting}}<br>
+    {% endfor %}
     <br>
-  </body>
-</html>
+    <h5 style="color:red;">{{change}}</h5>
+    <form class="form-inline" method="POST">
+      <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Edit a setting:</label>
+      <select name="setting" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+        <option selected>Please choose a setting</option>
+        <option value="ssid">SSID</option>
+        <option value="password">Password</option>
+      </select>
+      <br>
+      <div class="form-group">
+        <input type="text" class="form-control" id="new_value" name='new_value' placeholder="New Value">
+      </div>
+      <br>
+      <button type="submit" class="btn btn-primary my-1">Submit</button>
+    </form>
+    <br>
+    <i>A reboot is required for changes to take effect</i>
+  </div>
+  <br>
+</body>
 
 {% endblock %}

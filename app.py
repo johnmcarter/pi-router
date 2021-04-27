@@ -1,6 +1,10 @@
-# John Carter
-# Flask Server for Router Interface
-# June 2020
+'''
+John Carter
+Flask server for Pi-Router User Interface
+Created: 2021/04/26 19:57:43
+Last modified: 2021/04/26 20:14:09
+'''
+
 from flask import (Flask, g, render_template, redirect, url_for, 
                    request, session, flash)
 from passlib.hash import pbkdf2_sha256
@@ -46,6 +50,9 @@ def home():
             MAC = device[3]
             interface = device[-1]
             devices.append([device_name, IP, MAC, interface]) 
+        
+        # Copy newest graphs from malware detection repo  
+        subprocess.call(['cp', '-r', '/home/pi/malware_detection/figures/.', 'static/img/malware_detection'])
                    
         return render_template("index.html", name=name, 
                                credentials=credentials, 
@@ -114,13 +121,18 @@ def edit():
             # Display new settings
             config_file = open(filename, "r")
             credentials = config_file.readlines()
-            new_ssid = credentials[2].strip("\n").split("ssid=")[1]
-            new_password = credentials[8].strip("\n").split("wpa_passphrase=")[1]
     
             if change:
                 return render_template('edit.html', credentials=credentials, change=change)
 
         return render_template('edit.html', credentials=credentials)
+    else:
+        return render_template('login.html', message=login_message) 
+    
+@app.route('/network_health', methods=['GET', 'POST'])
+def network_health():
+    if 'user' in session:
+        return render_template("network_health.html")
     else:
         return render_template('login.html', message=login_message) 
 
