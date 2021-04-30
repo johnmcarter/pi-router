@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=root
 WorkingDirectory=/home/pi/web_server
-ExecStart=/home/pi/.local/bin/uwsgi --ini web_server.ini
+ExecStart=/home/pi/.local/bin/uwsgi --ini config/web_server.ini
 
 [Install]
 WantedBy=multi-user.target
