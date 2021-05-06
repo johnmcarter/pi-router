@@ -2,7 +2,7 @@
 John Carter
 Flask server for Pi-Router User Interface
 Created: 2021/04/26 19:57:43
-Last modified: 2021/04/26 21:51:25
+Last modified: 2021/05/05 21:15:40
 '''
 
 from flask import (Flask, g, render_template, redirect, url_for, 
@@ -10,6 +10,7 @@ from flask import (Flask, g, render_template, redirect, url_for,
 from passlib.hash import pbkdf2_sha256
 import subprocess
 import os
+import glob
 
 # Connect to user database
 from db import Database
@@ -51,12 +52,9 @@ def home():
             interface = device[-1]
             devices.append([device_name, IP, MAC, interface]) 
         
-        # Copy newest graphs from malware detection repo  
-        subprocess.call(['cp', '-r', '/home/pi/malware_detection/figures/.', 'static/img/malware_detection'])
-                   
         return render_template("index.html", name=name, 
                                credentials=credentials, 
-                               devices=devices)
+                               devices=devices, images=update_images())
     else:
         return render_template('login.html' ) 
     
@@ -132,7 +130,7 @@ def edit():
 @app.route('/network_health', methods=['GET', 'POST'])
 def network_health():
     if 'user' in session:
-        return render_template("network_health.html")
+        return render_template("network_health.html", images=update_images())
     else:
         return render_template('login.html', message=login_message) 
 
@@ -147,6 +145,13 @@ def reboot():
 def logout():
     session.pop('user', None)
     return redirect('/login')
+
+def update_images():
+    # Copy newest graphs from malware detection repo and get list of names
+    subprocess.call(['cp', '-r', '/home/pi/malware_detection/figures/.', 'static/img/malware_detection'])
+    images = glob.glob("static/img/malware_detection/*")
+
+    return images
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

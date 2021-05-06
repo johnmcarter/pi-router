@@ -48,7 +48,11 @@ Home
       <hr>
       <h4 class="text-left">Network Health</h4>
       <a href="/network_health">
-        <img src="/static/img/malware_detection/malware_detection.png"></img>
+        {% for image in images %}
+        <a href="{{image}}">
+          <img src="{{image}}"></img>
+        </a>
+        {% endfor %}
       </a>
       <br>
     </div>

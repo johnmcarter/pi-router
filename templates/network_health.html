@@ -14,9 +14,11 @@ Network Health
 <body>
   <div class="container">
     <h5>Current Network Status from Malware Detection Software</h5>
-    <a href="/static/img/malware_detection/malware_detection.png">
-      <img src="/static/img/malware_detection/malware_detection.png"></img>
+    {% for image in images %}
+    <a href="{{image}}">
+      <img src="{{image}}"></img>
     </a>
+    {% endfor %}
 </body>
 
 {% endblock %}
