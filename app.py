@@ -2,7 +2,7 @@
 John Carter
 Flask server for Pi-Router User Interface
 Created: 2021/04/26 19:57:43
-Last modified: 2021/05/05 21:15:40
+Last modified: 2021/06/03 21:19:40
 '''
 
 from flask import (Flask, g, render_template, redirect, url_for, 
@@ -148,7 +148,7 @@ def logout():
 
 def update_images():
     # Copy newest graphs from malware detection repo and get list of names
-    subprocess.call(['cp', '-r', '/home/pi/malware_detection/figures/.', 'static/img/malware_detection'])
+    subprocess.call(['cp', '-r', '/home/pi/malware_detection/figures/classification/5s/.', 'static/img/malware_detection'])
     images = glob.glob("static/img/malware_detection/*")
 
     return images
