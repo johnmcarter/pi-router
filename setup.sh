@@ -20,13 +20,13 @@ if [[ $# -ne 2 ]]; then
    exit 1
 fi
 
-"[${GRN}INFO${END}] Deinstalling classic networking"
+echo "[${GRN}INFO${END}] Deinstalling classic networking"
 systemctl daemon-reload
 systemctl disable --now ifupdown dhcpcd dhcpcd5 isc-dhcp-client isc-dhcp-common rsyslog
 apt --autoremove purge ifupdown dhcpcd dhcpcd5 isc-dhcp-client isc-dhcp-common rsyslog
 rm -r /etc/network /etc/dhcp
 
-"[${GRN}INFO${END}] Setup/enable systemd-resolved and systemd-networkd"
+echo "[${GRN}INFO${END}] Setup/enable systemd-resolved and systemd-networkd"
 systemctl disable --now avahi-daemon libnss-mdns
 apt --autoremove purge avahi-daemon
 apt install libnss-resolve
@@ -34,7 +34,7 @@ ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 apt-mark hold avahi-daemon dhcpcd dhcpcd5 ifupdown isc-dhcp-client isc-dhcp-common libnss-mdns openresolv raspberrypi-net-mods rsyslog
 systemctl enable systemd-networkd.service systemd-resolved.service
 
-"[${GRN}INFO${END}] Creating hostapd conf file"
+echo "[${GRN}INFO${END}] Creating hostapd conf file"
 apt install hostapd
 
 cat > /etc/hostapd/hostapd.conf <<EOF
@@ -53,7 +53,7 @@ EOF
 
 chmod 600 /etc/hostapd/hostapd.conf
 
-"[${GRN}INFO${END}] Editing hostapd service"
+echo "[${GRN}INFO${END}] Editing hostapd service"
 cp -p /etc/systemd/system/hostapd.service /etc/systemd/system/hostapd.service.orig
 sed "s/After=network.target/#After=network.target/" "/etc/systemd/system/hostapd.service.orig" > /etc/systemd/system/hostapd.service
 
@@ -75,7 +75,7 @@ systemctl enable accesspoint@wlan0.service
 rfkill unblock wlan
 
 
-"[${GRN}INFO${END}] Creating WPA Supplicant conf file"
+echo "[${GRN}INFO${END}] Creating WPA Supplicant conf file"
 cat > /etc/wpa_supplicant/wpa_supplicant-wlan0.conf <<EOF
 country=US
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
@@ -97,7 +97,7 @@ After=accesspoint@%i.service
 EOF
 
 
-"[${GRN}INFO${END}] Setting up static interfaces"
+echo "[${GRN}INFO${END}] Setting up static interfaces"
 cat > /etc/systemd/network/08-wifi.network <<EOF
 [Match]
 Name=wl*
@@ -124,4 +124,4 @@ DHCPServer=yes
 DNS=84.200.69.80 1.1.1.1
 EOF
 
-"[${GRN}INFO${END}] Setup is finished. Reboot to see changes!"
+echo "[${GRN}INFO${END}] Setup is finished. Reboot to see changes!"
