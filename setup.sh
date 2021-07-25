@@ -1,0 +1,122 @@
+#!/bin/bash
+
+# Author: John Carter
+# Created: 2021/07/25 16:59:27
+# Last modified: 2021/07/25 17:05:47
+# Setup script to creater access point capabilities
+
+GRN=$'\e[1;32m'
+RED=$'\e[1;31m'
+END=$'\e[0m'
+
+
+if (( EUID != 0 )); then
+   echo "[${RED}ERROR${END}] This script must be run as root" 
+   exit 1
+fi
+
+"[${GRN}INFO${END}] Deinstalling classic networking"
+systemctl daemon-reload
+systemctl disable --now ifupdown dhcpcd dhcpcd5 isc-dhcp-client isc-dhcp-common rsyslog
+apt --autoremove purge ifupdown dhcpcd dhcpcd5 isc-dhcp-client isc-dhcp-common rsyslog
+rm -r /etc/network /etc/dhcp
+
+"[${GRN}INFO${END}] Setup/enable systemd-resolved and systemd-networkd"
+systemctl disable --now avahi-daemon libnss-mdns
+apt --autoremove purge avahi-daemon
+apt install libnss-resolve
+ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+apt-mark hold avahi-daemon dhcpcd dhcpcd5 ifupdown isc-dhcp-client isc-dhcp-common libnss-mdns openresolv raspberrypi-net-mods rsyslog
+systemctl enable systemd-networkd.service systemd-resolved.service
+
+"[${GRN}INFO${END}] Creating hostapd conf file"
+apt install hostapd
+
+cat > /etc/hostapd/hostapd.conf <<EOF
+driver=nl80211
+ssid=pi-network
+country_code=US
+hw_mode=g
+channel=1
+auth_algs=1
+wpa=2
+wpa_passphrase=password
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP
+rsn_pairwise=CCMP
+EOF 
+
+chmod 600 /etc/hostapd/hostapd.conf
+
+"[${GRN}INFO${END}] Editing hostapd service"
+cp -p /etc/systemd/system/hostapd.service /etc/systemd/system/hostapd.service.orig
+sed "s/After=network.target/#After=network.target/" "/etc/systemd/system/hostapd.service.orig" > /etc/systemd/system/hostapd.service
+
+cat > /etc/systemd/system/accesspoint@.service <<EOF
+[Unit]
+Description=accesspoint with hostapd (interface-specific version)
+Wants=wpa_supplicant@%i.service
+
+[Service]
+ExecStartPre=/sbin/iw dev %i interface add ap@%i type __ap
+ExecStart=/usr/sbin/hostapd -i ap@%i /etc/hostapd/hostapd.conf
+ExecStopPost=-/sbin/iw dev ap@%i del
+
+[Install]
+WantedBy=sys-subsystem-net-devices-%i.device
+EOF
+
+systemctl enable accesspoint@wlan0.service
+rfkill unblock wlan
+
+
+"[${GRN}INFO${END}] Creating WPA Supplicant conf file"
+cat > /etc/wpa_supplicant/wpa_supplicant-wlan0.conf <<EOF
+country=US
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+network={
+    ssid="TestNet"
+    psk="realyNotMyPassword"
+    key_mgmt=WPA-PSK   # see ref (4)
+}
+EOF
+chmod 600 /etc/wpa_supplicant/wpa_supplicant-wlan0.conf
+systemctl disable wpa_supplicant.service
+
+cat > /etc/systemd/system/wpa_supplicant@wlan0.service <<EOF
+[Unit]
+BindsTo=accesspoint@%i.service
+After=accesspoint@%i.service
+EOF
+
+
+"[${GRN}INFO${END}] Setting up static interfaces"
+cat > /etc/systemd/network/08-wifi.network <<EOF
+[Match]
+Name=wl*
+[Network]
+LLMNR=no
+MulticastDNS=yes
+# If you need a static ip address, then toggle commenting next four lines (example)
+DHCP=yes
+#Address=192.168.50.60/24
+#Gateway=192.168.50.1
+#DNS=84.200.69.80 1.1.1.1
+EOF
+
+cat > /etc/systemd/network/12-ap.network <<EOF
+[Match]
+Name=ap@*
+[Network]
+LLMNR=no
+MulticastDNS=yes
+IPMasquerade=yes
+Address=192.168.4.1/24
+DHCPServer=yes
+[DHCPServer]
+DNS=84.200.69.80 1.1.1.1
+EOF
+
+"[${GRN}INFO${END}] Setup is finished. Reboot to see changes!"
