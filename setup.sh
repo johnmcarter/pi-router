@@ -49,7 +49,7 @@ wpa_passphrase=password
 wpa_key_mgmt=WPA-PSK
 wpa_pairwise=TKIP
 rsn_pairwise=CCMP
-EOF 
+EOF
 
 chmod 600 /etc/hostapd/hostapd.conf
 
