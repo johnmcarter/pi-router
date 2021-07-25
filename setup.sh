@@ -2,7 +2,7 @@
 
 # Author: John Carter
 # Created: 2021/07/25 16:59:27
-# Last modified: 2021/07/25 17:05:47
+# Last modified: 2021/07/25 17:11:51
 # Setup script to creater access point capabilities
 
 GRN=$'\e[1;32m'
@@ -12,6 +12,11 @@ END=$'\e[0m'
 
 if (( EUID != 0 )); then
    echo "[${RED}ERROR${END}] This script must be run as root" 
+   exit 1
+fi
+
+if [[ $# -ne 2 ]]; then
+    echo "[${RED}ERROR${END}] USAGE: $0 <tethered network> <tethered network password>" 
    exit 1
 fi
 
@@ -77,8 +82,8 @@ ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
 
 network={
-    ssid="TestNet"
-    psk="realyNotMyPassword"
+    ssid="$1"
+    psk="$2"
     key_mgmt=WPA-PSK   # see ref (4)
 }
 EOF
