@@ -4,6 +4,7 @@
 # Created: 2021/07/25 16:59:27
 # Last modified: 2021/07/25 17:11:51
 # Setup script to creater access point capabilities
+# https://raspberrypi.stackexchange.com/questions/89803/access-point-as-wifi-router-repeater-optional-with-bridge/89804#89804
 
 GRN=$'\e[1;32m'
 RED=$'\e[1;31m'
