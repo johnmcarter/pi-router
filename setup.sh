@@ -89,8 +89,20 @@ systemctl disable wpa_supplicant.service
 
 cat > /etc/systemd/system/wpa_supplicant@wlan0.service <<EOF
 [Unit]
-BindsTo=accesspoint@%i.service
-After=accesspoint@%i.service
+Description=WPA supplicant daemon (interface-specific version)
+Requires=sys-subsystem-net-devices-%i.device
+After=sys-subsystem-net-devices-%i.device
+Before=network.target
+Wants=network.target
+
+# NetworkManager users will probably want the dbus version instead.
+
+[Service]
+Type=simple
+ExecStart=/sbin/wpa_supplicant -c/etc/wpa_supplicant/wpa_supplicant-%I.conf -Dnl80211,wext -i%I
+
+[Install]
+Alias=multi-user.target.wants/wpa_supplicant@%i.service
 EOF
 
 
