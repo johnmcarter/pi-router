@@ -53,10 +53,6 @@ EOF
 
 chmod 600 /etc/hostapd/hostapd.conf
 
-echo "[${GRN}INFO${END}] Editing hostapd service"
-cp -p /etc/systemd/system/hostapd.service /etc/systemd/system/hostapd.service.orig
-sed "s/After=network.target/#After=network.target/" "/etc/systemd/system/hostapd.service.orig" > /etc/systemd/system/hostapd.service
-
 cat > /etc/systemd/system/accesspoint@.service <<EOF
 [Unit]
 Description=accesspoint with hostapd (interface-specific version)
@@ -87,6 +83,7 @@ network={
     key_mgmt=WPA-PSK   # see ref (4)
 }
 EOF
+
 chmod 600 /etc/wpa_supplicant/wpa_supplicant-wlan0.conf
 systemctl disable wpa_supplicant.service
 
