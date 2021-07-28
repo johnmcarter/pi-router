@@ -21,6 +21,9 @@ if [[ $# -ne 2 ]]; then
    exit 1
 fi
 
+echo "[${GRN}INFO${END}] Installing hostapd"
+apt install hostapd
+
 echo "[${GRN}INFO${END}] Deinstalling classic networking"
 systemctl daemon-reload
 systemctl disable --now ifupdown dhcpcd dhcpcd5 isc-dhcp-client isc-dhcp-common rsyslog
@@ -36,7 +39,6 @@ apt-mark hold avahi-daemon dhcpcd dhcpcd5 ifupdown isc-dhcp-client isc-dhcp-comm
 systemctl enable systemd-networkd.service systemd-resolved.service
 
 echo "[${GRN}INFO${END}] Creating hostapd conf file"
-apt install hostapd
 
 cat > /etc/hostapd/hostapd.conf <<EOF
 driver=nl80211
@@ -95,9 +97,6 @@ Requires=sys-subsystem-net-devices-%i.device
 After=sys-subsystem-net-devices-%i.device
 Before=network.target
 Wants=network.target
-
-# NetworkManager users will probably want the dbus version instead.
-
 [Service]
 Type=simple
 ExecStart=/sbin/wpa_supplicant -c/etc/wpa_supplicant/wpa_supplicant-%I.conf -Dnl80211,wext -i%I
