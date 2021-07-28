@@ -134,4 +134,9 @@ DHCPServer=yes
 DNS=84.200.69.80 1.1.1.1
 EOF
 
+echo "[${GRN}INFO${END}] Changing hostname to pirouter"
+cat > /etc/hostname <<EOF
+pirouter
+EOF
+
 echo "[${GRN}INFO${END}] Setup is finished. Reboot to see changes!"
