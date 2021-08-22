@@ -2,7 +2,7 @@
 
 # Author: John Carter
 # Created: 2021/07/25 16:59:27
-# Last modified: 2021/07/25 17:11:51
+# Last modified: 2021/08/22 13:58:36
 # Setup script to creater access point capabilities
 # https://raspberrypi.stackexchange.com/questions/89803/access-point-as-wifi-router-repeater-optional-with-bridge/89804#89804
 
@@ -131,6 +131,34 @@ Address=192.168.4.1/24
 DHCPServer=yes
 [DHCPServer]
 DNS=84.200.69.80 1.1.1.1
+EOF
+
+echo "[${GRN}INFO${END}] Setting up DNS using systemd"
+cat > /etc/systemd/resolved.conf <<EOF
+#  This file is part of systemd.
+#
+#  systemd is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU Lesser General Public License as published by
+#  the Free Software Foundation; either version 2.1 of the License, or
+#  (at your option) any later version.
+#
+# Entries in this file show the compile time defaults.
+# You can change settings by editing this file.
+# Defaults can be restored by simply deleting this file.
+#
+# See resolved.conf(5) for details
+
+[Resolve]
+DNS=192.168.1.1
+FallbackDNS=1.1.1.1 9.9.9.10 8.8.8.8 2606:4700:4700::1111 2620:fe::10 2001:4860$
+#Domains=
+#LLMNR=yes
+#MulticastDNS=yes
+DNSSEC=allow-downgrade
+DNSSEC=no
+#DNSOverTLS=no
+#Cache=yes
+#DNSStubListener=udp
 EOF
 
 echo "[${GRN}INFO${END}] Changing hostname to pirouter"
