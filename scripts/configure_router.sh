@@ -2,8 +2,9 @@
 
 # Author: John Carter
 # Created: 2021/07/25 16:59:27
-# Last modified: 2021/08/22 13:58:36
+# Last modified: 2021/08/22 14:00:52
 # Setup script to creater access point capabilities
+# Tested on a Raspberry Pi 3 and a Raspberry Pi 4
 # https://raspberrypi.stackexchange.com/questions/89803/access-point-as-wifi-router-repeater-optional-with-bridge/89804#89804
 
 GRN=$'\e[1;32m'
