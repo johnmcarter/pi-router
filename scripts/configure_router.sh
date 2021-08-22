@@ -17,7 +17,7 @@ if (( EUID != 0 )); then
 fi
 
 if [[ $# -ne 2 ]]; then
-    echo "[${RED}ERROR${END}] USAGE: $0 <tethered network> <tethered network password>" 
+    echo "[${RED}ERROR${END}] USAGE: $0 <tethered network> <tethered network password> <pi-network password>" 
    exit 1
 fi
 
@@ -48,7 +48,7 @@ hw_mode=g
 channel=1
 auth_algs=1
 wpa=2
-wpa_passphrase=password
+wpa_passphrase=$3
 wpa_key_mgmt=WPA-PSK
 wpa_pairwise=TKIP
 rsn_pairwise=CCMP
