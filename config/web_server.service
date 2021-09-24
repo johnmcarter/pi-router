@@ -4,8 +4,9 @@ After=network.target
 
 [Service]
 User=root
-WorkingDirectory=/home/pi/web_server
-ExecStart=/home/pi/.local/bin/uwsgi --ini config/web_server.ini
+WorkingDirectory=/home/pi/rpi_router_web_server
+Environment="PATH=/home/pi/rpi_router_web_server/venv/bin"
+ExecStart=/home/pi/rpi_router_web_server/venv/bin/uwsgi --ini config/web_server.ini
 
 [Install]
 WantedBy=multi-user.target
