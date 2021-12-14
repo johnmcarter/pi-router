@@ -17,7 +17,7 @@ if (( EUID != 0 )); then
    exit 1
 fi
 
-if [[ $# -ne 2 ]]; then
+if [[ $# -ne 3 ]]; then
     echo "[${RED}ERROR${END}] USAGE: $0 <tethered network> <tethered network password> <pi-network password>" 
    exit 1
 fi
